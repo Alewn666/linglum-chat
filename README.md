@@ -1,7 +1,7 @@
 # 💬 灵珑聊天
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
-![Android](https://img.shields.io/badge/Android-7.0%2B-3DDC84?logo=android&logoColor=white)
+![Android](https://img.shields.io/badge/Android-5.0%2B-3DDC84?logo=android&logoColor=white)
 ![Release](https://img.shields.io/github/v/release/Alewn666/linglum-chat?label=release)
 ![E2EE](https://img.shields.io/badge/%E6%B6%88%E6%81%AF-%E7%AB%AF%E5%88%B0%E7%AB%AF%E5%8A%A0%E5%AF%86-2F855A)
 
@@ -69,7 +69,7 @@ sh publish_patch.sh out/patch               # 发布到服务端 data/patch/
 
 ## 快速开始
 
-**服务端**（Flask 3 + gunicorn + SQLite WAL，默认 8097）：
+**服务端**（Flask 3 + gunicorn gthread 32 线程 + SQLite WAL，默认 8097）：
 
 ```bash
 cd 主体/server
@@ -78,6 +78,8 @@ python3 app.py                       # 或按 Dockerfile 用 gunicorn 起
 # docker build -t linglum-chat-server . && docker run -p 8097:8097 linglum-chat-server
 ```
 
+> 仓库内 `主体/docs/聊天App说明.md` 是 v1.0 时期的说明，其中「gthread ×8」与当前 Dockerfile 的 **32 线程**不一致，部署以 Dockerfile 为准。
+
 **客户端**：直接装 [Releases](https://github.com/Alewn666/linglum-chat/releases) 里的 `linglum-chat-V0.3.3.apk`，或者从源码构建：
 
 ```bash
@@ -85,7 +87,7 @@ cd 主体/app
 sh build_apk.sh                      # 无 Gradle：javac → d8 → aapt2 → zipalign → apksigner
 ```
 
-App 里把服务器地址填成 NAS 的局域网地址（默认示例 `http://192.168.1.100:8097`，请改成自己的）。
+App 里把服务器地址填成 NAS 的局域网地址（默认示例 `http://192.168.1.100:8097`，请改成自己的）。`AndroidManifest.xml` 声明 `minSdkVersion=21`（Android 5.0+）、`targetSdkVersion=34`，构建脚本用 `--min-api 21`。
 
 ## 配置
 
